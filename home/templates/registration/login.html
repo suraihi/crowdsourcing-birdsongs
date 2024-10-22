@@ -1,0 +1,78 @@
+{% extends "base_bootstrap.html" %}
+
+{% block title %}
+  Login - {{ settings.APP_NAME }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6" style="margin-top: 50px;">
+      <div class="card p-4 shadow">
+        <h2 class="text-center mb-4">Login to Your Account</h2>
+        {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            Your username and password didn't match. Please try again.
+          </div>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}" class="mb-4">
+          {% csrf_token %}
+          <!-- Email input -->
+
+
+        <div class="mb-3">
+          <label for="exampleInputUsername" class="form-label">Username</label>
+          {{ form.username }}
+        </div>
+
+
+          <!-- Password input -->
+          <div class="mb-3">
+              <label for="exampleInputUsername" class="form-label">Password</label>
+            {{ form.password }}
+          </div>
+
+          <!-- Remember me and Forgot password -->
+          <div class="row mb-4">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                {{ form.remember_me }}
+                <label class="form-check-label" for="id_remember_me"> Remember me</label>
+              </div>
+            </div>
+            <div class="col">
+              <!-- Forgot password link -->
+              <a href="#!" class="text-decoration-none">Forgot password?</a>
+            </div>
+          </div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+
+          <!-- Register and social login buttons -->
+          <div class="text-center">
+            <p>Not a member? <a href="#!" class="text-decoration-none">Register</a></p>
+            <p>or sign up with:</p>
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="fab fa-google"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="fab fa-twitter"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="fab fa-github"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

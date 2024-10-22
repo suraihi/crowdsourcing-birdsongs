@@ -1,0 +1,158 @@
+{% extends "base_bootstrap.html" %}
+{% load humanize %}
+{% block content %}
+{% load custom_filters %}
+  <div class="container-fluid mt-4">
+    <h1>All Observations</h1>
+    <div class="row mb-3">
+
+     <!--       Filtering      -->
+
+
+
+      <div class="col-md-4">
+        <form method="GET" action="{% url 'explore:all' %}" class="form-inline">
+          <div class="form-group mr-2">
+
+               <label for="country_filter" class="mr-2">Filter by Country:</label>
+<select id="country_filter" name="country" class="form-control">
+  <option value="">All Countries</option>
+  {% for country_code, country_name in countries %}
+    <option value="{{ country_code }}">{{ country_name }}</option>
+  {% endfor %}
+</select>
+
+
+            <label for="species_filter" class="mr-2">Filter by Species:</label>
+            <select id="species_filter" name="species" class="form-control">
+              <option value="">All Species</option>
+              {% for bird in birds %}
+                <option value="{{ bird.species }}">{{ bird.species }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group mr-2">
+            <label for="sort_by" class="mr-2">Sort by:</label>
+            <select id="sort_by" name="sort_by" class="form-control">
+              <option value="">Sort by</option>
+              <option value="audio_duration">Audio Duration</option>
+              <option value="uploaded_at">Date</option>
+              <option value="audio_quality">Audio Quality</option>
+            </select>
+          </div>
+          <div class="form-group mr-2">
+            <label for="sort_order" class="mr-2">Sort Order:</label>
+            <select id="sort_order" name="sort_order" class="form-control">
+              <option value="">Normal</option>
+              <option value="desc">Inversed</option>
+            </select>
+          </div>
+          <input type="submit" value="Filter" class="btn btn-primary">
+        </form>
+      </div>
+    <!--       Filtering   ends   -->
+
+    <!--       User options     -->
+
+    <!--    User options  ends   -->
+
+    </div>
+
+
+    <!--       card list     -->
+<div class="row">
+  {% if observations %}
+    {% for observation in observations %}
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h5 class="card-title" style=" background-color: #0000000a;border-left: 5px solid black; margin: 0; padding: 5px;">{{ observation.bird.species }}_{{ observation.pk }}</h5>
+              </div>
+              <div class="col-md-6 text-right">
+                <p><i class="fas fa-user"></i> : {{ observation.owner }}</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+
+                <p><i class="fas fa-clock"></i> : {{ observation.audio_duration |convert_to_time_format}}</p>
+                <p><i class="fas fa-calendar-alt"></i> : {{ observation.uploaded_at |naturaltime}}</p>
+                <p><i></i><a href="{% url 'explore:observations_detail' observation.id %}" class="card-link">Details</a></p>
+
+              </div>
+              <div class="col-md-6 text-right">
+                <p><i class="fas fa-headphones"></i> Quality: {{ observation.audio_quality }}</p>
+                <p><i class="fas fa-globe"></i> : {{ observation.country }}</p>
+                {% if observation.owner == user %}
+                <p><i>
+                  <a href="{% url 'upload:observations_update' observation.id %}" class="fas fa-edit"></a>
+                  <a href="{% url 'upload:observations_delete' observation.id %}" class="fas fa-trash-alt"></a></i>
+                  </p>
+                {% endif %}
+
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="col-md-12">
+      <p>There are no observations.</p>
+    </div>
+  {% endif %}
+</div>
+
+
+
+      <!--    card list  ends     -->
+
+    </div>
+   {% if observations.has_other_pages %}
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <nav aria-label="Observation Pagination">
+        <ul class="pagination justify-content-center">
+          {% if observations.has_previous %}
+            <li class="page-item">
+              <a href="?page=1" class="page-link" aria-label="First">
+                &laquo; First
+              </a>
+            </li>
+            <li class="page-item">
+              <a href="?page={{ observations.previous_page_number }}" class="page-link" aria-label="Previous">
+                Previous
+              </a>
+            </li>
+          {% endif %}
+
+          <li class="page-item disabled">
+            <span class="page-link">
+              Page {{ observations.number }} of {{ observations.paginator.num_pages }}.
+            </span>
+          </li>
+
+          {% if observations.has_next %}
+            <li class="page-item">
+              <a href="?page={{ observations.next_page_number }}" class="page-link" aria-label="Next">
+                Next
+              </a>
+            </li>
+            <li class="page-item">
+              <a href="?page={{ observations.paginator.num_pages }}" class="page-link" aria-label="Last">
+                Last &raquo;
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

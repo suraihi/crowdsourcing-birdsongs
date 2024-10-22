@@ -1,0 +1,211 @@
+{% extends "base_bootstrap.html" %}
+{% load static %}
+
+
+{% block head %}
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>SoftLand Bootstrap Template - Index</title> <!-- ===========================CHANGE===================================-->
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'base/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'base/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'base/vendor/aos/aos.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'base/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'base/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'base/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'base/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet" type="text/css">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'base/styles/style.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: SoftLand
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/softland-bootstrap-app-landing-page-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+{% endblock %}
+
+{% block content %}
+
+  <!-- ======= Hero Section ======= -->
+  <section class="hero-section" id="hero">
+
+    <div class="wave">
+
+
+
+    </div>
+
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-12 hero-text-image">
+          <div class="row">
+            <div class="col-lg-8 text-center text-lg-start">
+              <h1 data-aos="fade-right">Bird Songs the Way You Like</h1>
+              <p class="mb-5" data-aos="fade-right" data-aos-delay="100"> Listen,View, Learn, Contribute: Join the Chorus. </p>
+              <p data-aos="fade-right" data-aos-delay="200" data-aos-offset="-500"><a href="{% url 'explore:all' %}" class="btn btn-outline-white btn-lg" style="border:solid; border-color:white; color:white;">Get started</a></p>
+            </div>
+<div class="col-lg-4 iphone-wrap">
+  <img src="{% static 'base/img/phone_1.png' %}" alt="Image" class="phone-1" data-aos="fade-right" style="max-width: 80%; height: auto;">
+  <!-- Adjust the max-width and height values as needed -->
+  <img src="{% static 'base/img/phone_2.png' %}" alt="Image" class="phone-2" data-aos="fade-right" data-aos-delay="200" style="max-width: 80%; height: auto;">
+  <!-- Adjust the max-width and height values as needed -->
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+
+    <!-- ======= Home Section ======= -->
+    <section class="section" style="height: 600px;">
+      <div class="container">
+
+        <div class="row justify-content-center text-center mb-5">
+          <div class="col-md-5" data-aos="fade-up">
+            <h2 class="section-heading">Exploring Audio Datasets Made Effortless</h2> <!-- ===========================CHANGE=====icons to pics=======================-->
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="">
+            <div class="feature-1 text-center">
+              <div class="wrap-icon icon-1">
+                <i class="bi bi-people"></i>
+              </div>
+              <h3 class="mb-3">Spectrogram Insights</h3>
+              <p>Delve into detailed spectrogram analyses to understand and appreciate avian vocalizations.</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-1 text-center">
+              <div class="wrap-icon icon-1">
+                <i class="bi bi-brightness-high"></i>
+              </div>
+              <h3 class="mb-3">Precision Cropping</h3>
+              <p>Fine-tune audio samples with Mel-spectrogram and MFCC tools for Your detailed study.</p>
+            </div>
+          </div>
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-1 text-center">
+              <div class="wrap-icon icon-1">
+                <i class="bi bi-bar-chart"></i>
+              </div>
+              <h3 class="mb-3">Get your Samples Right Away</h3>
+              <p>Generate Mel-Spectrogram, STFT, MFCC, and Audio File in one Click.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+
+    <section class="section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4 me-auto">
+            <h2 class="mb-4">Explore</h2>
+            <p class="mb-4">Explore our Ride Range of Bird Songs Datasets. various species in different regions.</p>
+            <p><a href="{% url 'explore:all' %}" class="btn btn-primary btn-lg">Explor Now</a></p> <!-- =================link for button==========CHANGE=====add image=======================-->
+          </div>
+          <div class="col-md-6" data-aos="fade-left">
+            <img src="{% static 'base/img/exp.png' %}" alt="Image" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4 ms-auto order-2">
+            <h2 class="mb-4">Contribute to our Dataset</h2>
+            <p class="mb-4">Upload Your observation of a Birdsong to be Part of our Chorus. Its Effortless</p>
+            <p><a href="{% url 'upload:observations_create' %}" class="btn btn-primary btn-lg">Upload Observatios</a></p>
+          </div>
+          <div class="col-md-6" data-aos="fade-right">
+            <img src="{% static 'base/img/up.png' %}" alt="Image" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section">
+
+      <div class="container">
+        <div class="row justify-content-center text-center mb-5" data-aos="fade">
+          <div class="col-md-6 mb-5">
+            <img src="assets/img/undraw_svg_1.svg" alt="Image" class="img-fluid">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <div class="step">
+              <span class="number">01</span>
+              <h3>Sign Up</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, optio.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="step">
+              <span class="number">02</span>
+              <h3>Create Profile</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, optio.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="step">
+              <span class="number">03</span>
+              <h3>Enjoy the app</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem, optio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+
+
+
+
+  </main><!-- End #main -->
+
+
+
+
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+
+
+  <script src="{% static 'base/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'base/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'base/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'base/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'base/js/main.js' %}"></script>
+
+{% endblock %}

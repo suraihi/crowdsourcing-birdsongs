@@ -1,0 +1,75 @@
+{% load humanize %} <!-- https://docs.djangoproject.com/en/4.2/ref/contrib/humanize -->
+{% load static %}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/scroll.css' %}">
+</head>
+{% block content %}
+<script src="{% static 'js/cut.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/cropper.js' %}"></script>
+
+<input type="hidden" id="species" value="{{ observations.bird.species }}">
+<input type="hidden" id="ob_id" value="{{ observations.pk }}">
+
+
+<span style="float: right;">
+({{ observations.uploaded_at|naturaltime }})
+{% if observations.owner == user %}
+<a href="{% url 'upload:observations_update' observations.id %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'upload:observations_delete' observations.id %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+
+
+<h1>{{observations.bird.species}}</h1>
+<p>by: {{ observations.owner }}</p>
+<p>comment: {{ observations.comment }}</p>
+
+
+<button id="toggleScrollButton">Toggle Auto-Scrolling</button>
+<label for="width-select">Select Cursor Width:</label>
+<select id="width-select">
+<option selected value="224">1 second</option>
+<option value="448">2 seconds</option>
+</select>
+
+<!-- -------spectrogram------------------------- -->
+
+<div id="frame">
+    <div id="spectrogram-container">
+        <img src="{{observations.spectrogram_files_set.first.spectrogram_file.url}}" id="image">
+    </div>
+    <div id="cursor"><div id="cursor2"></div></div>
+</div>
+<!-- ----------audio------------------------- -->
+
+<div id="controls">
+    <button id="playButton">Play/pause</button>
+</div>
+
+<!-- ------------scrolling----------  -->
+<div id="scrollControls">
+    <button id="scrollForwardButton">Scroll Forward</button>
+    <button id="scrollBackwardButton">Scroll Backward</button>
+</div>
+<div id="analogScrollContainer">
+    <div id="scrollHandle"></div>
+</div>
+
+<button id="crop-btn">Crop</button>
+
+
+<audio  src="{{observations.audio_file.url}}" id="audio" > </audio>
+
+
+
+<p>
+    <a href="{{ observations.audio_file.url }}" download>Download Audio</a> |
+    <a href="{{ observations.spectrogram_files_set.first.spectrogram_file.url }}" download>Download Spectrogram</a>
+</p>
+
+<p>
+<a href="{% url 'upload:all' %}">All My Observations</a>
+</p>
+{% endblock %}

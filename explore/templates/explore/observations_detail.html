@@ -1,0 +1,256 @@
+{% extends "base_bootstrap.html" %}
+{% load humanize %} <!-- https://docs.djangoproject.com/en/4.2/ref/contrib/humanize -->
+{% load static %}
+{% block head %}
+{% load custom_filters %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles/scroll.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/cropper.css' %}">
+  <style>
+    /* Custom hover styles */
+    .btn-outline-primary.custom-hover:hover {
+      color: #0d6efd !important; /* Change to your desired hover color */
+      background-color: #0067ff1f !important; /* Change to your desired hover background color */
+      border-color: #000307 !important; /* Change to your desired hover border color */
+    }
+
+    /* Apply custom hover styles only when checkbox is checked */
+    input.btn-check:checked + label.btn.btn-outline-primary.custom-hover:hover {
+      color: inherit !important;
+      background-color: #0d6efde0 !important;
+      border-color: inherit !important;
+    }
+
+
+.loading {
+    cursor: not-allowed;
+    opacity: 0.6;
+    /* Add any other styles you want to change while it's loading */
+}
+  </style>
+{% endblock %}
+
+
+{% block content %}
+
+
+<script src="{% static 'js/cut2.js' %}"></script>
+<script src="{% static 'js/scroll.js' %}"></script>
+<script src="{% static 'js/cropper.js' %}"></script>
+<script src="{% static 'js/get_samples.js' %}"></script>
+
+<input type="hidden" id="species" value="{{ observations.bird.species }}">
+<input type="hidden" id="ob_id" value="{{ observations.pk }}">
+
+ <div class="container-fluid mt-4">
+
+<h1>{{observations.bird.species}}</h1>
+<h4>{{ observations.pk }}</h4>
+<span style="float: right;">
+    by: {{observations.owner}}
+({{ observations.uploaded_at|naturaltime }})
+
+{% if observations.owner == user %}
+<a href="{% url 'upload:observations_update' observations.id %}"><i class="fa fa-pencil"></i></a>
+<a href="{% url 'upload:observations_delete' observations.id %}"><i class="fa fa-trash"></i></a>
+{% endif %}
+</span>
+<p>comment: {{ observations.comment }}</p>
+
+
+<!-- ==============scrolling===============  -->
+
+<!-- audio controls -->
+
+
+<div style=" width: fit-content; margin:0 auto; padding: 0px;">
+
+  <div class="row">
+    <div id="tProgress" class="col">
+
+    </div>
+    <div class="col " style="width: 5px;">
+      /
+    </div>
+    <div class="col">
+{{ observations.audio_duration|convert_to_time_format }}
+    </div>
+  </div>
+
+</div>
+
+
+
+<div style=" width: fit-content; margin:0 auto; padding:5px;">
+
+  <div class="btn-group me-2" role="group" aria-label="Second group">
+    <button id="scrollBackwardButton" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rewind-fill" viewBox="0 0 16 16">
+  <path d="M8.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696z"/>
+  <path d="M.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L.404 7.304Z"/>
+</svg></button>
+    <button id="playButton" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+  <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+</svg></button>
+    <button id="scrollForwardButton" class="btn btn-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
+  <path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+  <path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+</svg></button>
+
+    </div>
+
+</div>
+
+<!-- Auto-Scrolling -->
+
+<div>
+<div class="form-check form-switch" style="margin:0 auto;">
+  <input class="form-check-input" type="checkbox" role="switch" id="toggleScrollButton" checked>
+  <label class="form-check-label" for="toggleScrollButton">Auto-Scrolling</label>
+</div>
+</div>
+
+
+<!-- Scroller handle -->
+
+<div id="analogScrollContainer">
+    <div id="scrollHandle"></div>
+</div>
+
+<!-- ================-audio===============- -->
+
+<audio  src="{{observations.audio_file.url}}" id="audio" > </audio>
+
+
+
+
+<!-- ===============spectrogram=================== -->
+
+<div class="float-container">
+
+<div class="spectrogram-scale ">
+        <div class="scale-item">8192 -</div>
+        <div class="scale-item">4096 -</div>
+        <div class="scale-item">2048 -</div>
+        <div class="scale-item">1024 -</div>
+        <div class="scale-item">512 -</div>
+        <div class="scale-item">0 -</div>
+</div>
+
+<div id="frame">
+    <div id="spectrogram-container">
+        <img src="{{observations.spectrogram_files_set.first.spectrogram_file.url}}" id="image">
+    </div>
+    <div id="cursor"><div id="cursor2"></div></div>
+</div>
+
+</div>
+<!-- ==================generating samples=================  -->
+
+<form id="downloadForm">
+
+<div style=" width: fit-content; margin:0 auto; padding:10px;">
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+                         <!-- First group -->
+  <div class="btn-group me-2" role="group" aria-label="First group">
+<button type="button" id = "sample-btn" class="btn btn-dark">Generate Sample</button>
+
+<label for="width-select"></label>
+<select id="width-select" class="form-select form-select-sm" style="width: 120px; text-align: center;" aria-label="Small select example">
+<option selected value="224">1 second</option>
+<option value="448">2 seconds</option>
+</select>
+  </div>
+
+                         <!-- Second group -->
+  <div class="btn-group me-2" role="group" aria-label="Second group">
+<input type="checkbox" class="btn-check" id="mfccCheckbox" autocomplete="off">
+  <label class="btn btn-outline-primary custom-hover " for="mfccCheckbox"> MFCC </label>
+
+  <input type="checkbox" class="btn-check" id="spectrogramCheckbox" autocomplete="off">
+  <label class="btn btn-outline-primary custom-hover" for="spectrogramCheckbox"> Spectrogram </label>
+
+  <input type="checkbox" class="btn-check" id="audioCheckbox" autocomplete="off">
+  <label class="btn btn-outline-primary custom-hover" for="audioCheckbox">Audio</label>
+
+  <input type="checkbox" class="btn-check" id="melCheckbox" autocomplete="off">
+  <label class="btn btn-outline-primary custom-hover" for="melCheckbox">MEL</label>
+
+  </div>
+
+</div>
+</div>
+
+</form>
+
+
+<!-- =========================== -->
+
+
+<p>
+    <a href="{{ observations.audio_file.url }}" download>Download Audio</a> |
+    <a href="{{ observations.spectrogram_files_set.first.spectrogram_file.url }}" download>Download Spectrogram</a>
+</p>
+
+<p>
+<a href="{% url 'explore:all' %}">All Observations</a>
+
+{% if user.is_authenticated %}
+ | <a href="{% url 'upload:all' %}">My Observations</a>
+{% endif %}
+</p>
+
+
+
+
+
+</div>
+
+
+<script>
+
+
+  const tProgress = document.getElementById("tProgress");
+  const audio = document.getElementById("audio");
+
+
+  function floatToTime(float_time) {
+
+
+    let curMinutes = Math.floor(float_time / 60);
+    let curSeconds = Math.floor(float_time - curMinutes * 60);
+
+    if (curMinutes < 10) curMinutes = "0" + curMinutes;
+    if (curSeconds < 10) curSeconds = "0" + curSeconds;
+    let currentTimeFormatted = `${curMinutes}:${curSeconds}`;
+
+    if (isNaN(curMinutes) || isNaN(curSeconds)) currentTimeFormatted = "00:00";
+
+
+
+    return currentTimeFormatted;
+}
+
+
+function updateCurrTime (){
+
+    tProgress.textContent = floatToTime(audio.currentTime);
+
+}
+
+  // Assuming you have an event listener or interval calling updateCurrTime function
+  audio.addEventListener('timeupdate', updateCurrTime);
+  tProgress.textContent = floatToTime(audio.currentTime);
+
+
+
+</script>
+
+{% endblock %}
+
+
+
+
+
+
+
+

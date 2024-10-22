@@ -1,0 +1,112 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Edit dj4e-samples/settings.py and add APP_NAME = 'DJ4E Samples' or similar -->
+    <title>{% block title %}{{ settings.APP_NAME }}{% endblock %}</title>
+
+    <!-- Replace this value (42-42) with the one provided by the autograder -->
+
+    <meta name="dj4e" content="42-42">
+
+    <meta name="dj4e-code" content="99999999">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+
+    <meta name="dj4e-version" content="2023-07-04">
+
+    {% block head %} {% endblock %}
+    <style>
+        body {
+            padding-top: 56px; /* Adjust the padding top for the header height */
+        }
+        .shadow-header {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    {% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-header">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Suraihi's FYP</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    {% url 'home:all' as home_url %}
+                    <a class="nav-link {% if request.path == home_url %}active{% endif %}" aria-current="page" href="{% url 'home:all' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    {% url 'explore:all' as explore_url %}
+                    <a class="nav-link {% if request.path == explore_url  %}active{% endif %}" href="{% url 'explore:all' %}">Explore</a>
+                </li>
+
+            </ul>
+            <ul class="navbar-nav ms-auto">
+
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    {% url 'upload:all' as upload_url %}
+                    <a class="nav-link {% if request.path == explore_url  %}active{% endif %}" href="{% url 'upload:all' %}">My Profile</a>
+                </li>
+
+                <li class="nav-item" style="padding:1px;">
+                    <a class="btn btn-danger btn-sm" style="margin-top:5px;" href="{% url 'logout' %}?next={{ request.path }}">Logout</a>
+                </li>
+
+                <li class="nav-item" style="padding:1px;">
+                    {% url 'upload:observations_create' as createob_url %}
+                    <a class="btn btn-success btn-sm {% if request.path == createob_url %}active{% endif %}" style="margin-top:5px; " href="{% url 'upload:observations_create' %}">Add an Observation</a>
+                </li>
+
+
+                {% else %}
+                <li class="nav-item">
+                    {% url 'login' as login_url %}
+                    <a class="btn btn-primary btn-sm {% if request.path == login_url %}' %}active{% endif %}" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                </li>
+                 {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    {% endblock %}
+
+    <div class="container-fluid" style="padding:50px; padding-top:20px;">
+        {% block welcome %} {% endblock %}
+
+        {% block messages %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="alert alert-{{msg.level_tag}}" role="alert">
+                        {{msg.message}}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">Site Footer &copy; {{ settings.APP_NAME }} {% now "Y" %}</span>
+        </div>
+    </footer>
+    {% endblock %}
+</body>
+</html>

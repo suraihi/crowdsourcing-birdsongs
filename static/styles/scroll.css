@@ -1,0 +1,100 @@
+/* Wrap your existing CSS within .custom-scroll */
+
+.scale-item {
+    /* Style for each scale item */
+    /* For example: */
+    margin: 0;
+    padding: 2px 0;
+    font-size: 12px;
+    /* Add more styling as needed */
+}
+
+.float-container {
+    border: 3px solid #fff;
+}
+
+.spectrogram-scale {
+    width: 50px;
+    height: 224px; /* Adjust height as needed */
+    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+
+    #image-container {
+        width: 300px;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    #cropped-image {
+        width: 100%;
+        height: 100%;
+    }
+
+    #frame {
+        width: calc(100% - 50px);
+        height: 224;
+        border: 1px solid #d70000;
+        position: relative;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+
+    #spectrogram-container {
+        height: 224;
+        display: inline-block;
+        position: relative;
+        padding: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    #cursor {
+        position: absolute;
+        top: 0;
+        width: 0px;
+        height: 224px;
+        border-left-style: solid;
+        border-color: red;
+
+        border-left-width: 2px;
+        border-top-width: 2px;
+        border-top-width: 2px;
+        border-right-width: 2px;
+    }
+
+    #cursor2 {
+        position: absolute;
+        top: 0;
+        width: 224px;
+        height: 224px;
+        background-color: white;
+        opacity: 10%;
+    }
+
+    #controls {
+        margin-top: 20px;
+    }
+
+    #analogScrollContainer {
+        width: 100%; /* Set the width to match the #frame */
+        height: 20px;
+        background-color: #f1f1f1;
+        position: relative;
+        cursor: pointer;
+    }
+
+    #scrollHandle {
+        width: 20px;
+        height: 100%;
+        background-color: #4caf50;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+

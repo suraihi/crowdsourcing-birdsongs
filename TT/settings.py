@@ -33,7 +33,7 @@ COUNTRIES_OVERRIDE = {**COUNTRIES, **dict(EXTRA_COUNTRIES)}
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#-1s+%91^c7_0urlb(ynwu=(!)vzs4)7lc1=btce2pb)@jnt8!'
+SECRET_KEY = ''
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
